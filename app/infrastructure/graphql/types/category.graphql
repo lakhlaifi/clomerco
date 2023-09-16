@@ -1,0 +1,57 @@
+const { gql } = require('apollo-server');
+
+const categoryType = gql`
+  type Category {
+    id: ID!
+    version: Int!
+    name: [LanguageString!]!
+    slug: [LanguageString!]!
+    parent: ParentCategory
+    ancestors: [String!]
+    orderHint: String
+    createdAt: String!
+    lastModifiedAt: String!
+  }
+
+  type LanguageString {
+    lang: String!
+    value: String!
+  }
+
+  type ParentCategory {
+    typeId: String!
+    id: ID!
+  }
+
+  input CategoryInput {
+    version: Int!
+    name: [LanguageStringInput!]!
+    slug: [LanguageStringInput!]!
+    parent: ParentCategoryInput
+    ancestors: [String!]
+    orderHint: String
+  }
+
+  input LanguageStringInput {
+    lang: String!
+    value: String!
+  }
+
+  input ParentCategoryInput {
+    typeId: String!
+    id: ID!
+  }
+
+  type Query {
+    getCategoryById(id: ID!): Category
+    getAllCategories: [Category!]
+  }
+
+  type Mutation {
+    createCategory(input: CategoryInput!): Category
+    updateCategory(id: ID!, input: CategoryInput!): Category
+    deleteCategory(id: ID!): Boolean
+  }
+`;
+
+module.exports = categoryType;
